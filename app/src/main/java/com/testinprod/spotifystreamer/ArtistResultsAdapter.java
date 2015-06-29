@@ -9,17 +9,28 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import kaaes.spotify.webapi.android.models.Artist;
+
 /**
  * Created by Tim on 6/28/2015.
  */
 public class ArtistResultsAdapter extends BaseAdapter {
-    private ArrayList<String> mArtistResults;
+    private static final String LOG_TAG = ArtistResultsAdapter.class.getSimpleName();
+    private ArrayList<Artist> mArtistResults;
 
-    public ArtistResultsAdapter(ArrayList<String> Artists){
+    public ArtistResultsAdapter(){
         super();
 
-        mArtistResults = Artists;
+        mArtistResults = new ArrayList<>();
     }
+
+    public void setArtistPager(ArrayList<Artist> NewPager)
+    {
+        // TODO: Handle zero results
+        mArtistResults = NewPager;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return mArtistResults.size();
@@ -45,7 +56,7 @@ public class ArtistResultsAdapter extends BaseAdapter {
         }
 
         TextView artistName = (TextView) convertView.findViewById(R.id.textview_artist);
-        artistName.setText(mArtistResults.get(position));
+        artistName.setText(mArtistResults.get(position).name);
 
         return convertView;
     }
