@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -56,7 +59,14 @@ public class ArtistResultsAdapter extends BaseAdapter {
         }
 
         TextView artistName = (TextView) convertView.findViewById(R.id.textview_artist);
-        artistName.setText(mArtistResults.get(position).name);
+        Artist artist = mArtistResults.get(position);
+        artistName.setText(artist.name);
+        if(artist.images.size() > 0)
+        {
+            ImageView artistImage = (ImageView) convertView.findViewById(R.id.imageview_artist);
+            Picasso.with(parent.getContext()).load(artist.images.get(0).url).into(artistImage);
+        }
+
 
         return convertView;
     }
