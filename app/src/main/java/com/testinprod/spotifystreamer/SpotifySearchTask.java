@@ -30,10 +30,17 @@ public class SpotifySearchTask extends AsyncTask<String, Void, ArrayList<Artist>
             return null;
         }
 
+        String searchText = params[0].trim();
+
+        if(searchText.isEmpty())
+        {
+            return new ArrayList<>();
+        }
+
         // TODO: Implement paging support
         SpotifyApi api = new SpotifyApi();
         SpotifyService spotifyService = api.getService();
-        ArtistsPager results = spotifyService.searchArtists(params[0]);
+        ArtistsPager results = spotifyService.searchArtists(searchText);
         ArrayList<Artist> artists = new ArrayList<>(results.artists.items);
         return artists;
     }
