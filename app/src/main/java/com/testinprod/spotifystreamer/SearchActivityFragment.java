@@ -1,23 +1,30 @@
 package com.testinprod.spotifystreamer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import kaaes.spotify.webapi.android.models.Artist;
+
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class SearchActivityFragment extends Fragment {
+    private static final String LOG_TAG = SearchActivityFragment.class.getSimpleName();
+
     private ArtistResultsAdapter mResultsAdapter;
 
     public SearchActivityFragment() {
@@ -59,6 +66,17 @@ public class SearchActivityFragment extends Fragment {
 
         ListView resultList = (ListView) rootView.findViewById(R.id.listview_results);
         resultList.setAdapter(mResultsAdapter);
+        resultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Artist selected = (Artist) mResultsAdapter.getItem(position);
+                Intent topSongsIntent = new Intent(getActivity(),TopTenSongsActivity.class);
+                ArtistSimpleParcelable artistSimpleParcelable = new ArtistSimpleParcelable(selected);
+                Log.v(LOG_TAG,"Artist: " + artistSimpleParcelable.name + " - " + artistSimpleParcelable.id);
+                topSongsIntent.putExtra(ArtistSimpleParcelable.EXTRA_SIMPLE_ARTIST,artistSimpleParcelable);
+                startActivity(topSongsIntent);
+            }
+        });
 
         return rootView;
     }

@@ -1,17 +1,26 @@
 package com.testinprod.spotifystreamer;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class TopTenSongsActivity extends ActionBarActivity {
+public class TopTenSongsActivity extends AppCompatActivity {
+    private static final String LOG_TAG = TopTenSongsActivity.class.getSimpleName();
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_ten_songs);
+        if(savedInstanceState == null)
+        {
+//            TopTenSongsActivityFragment topTenSongsActivityFragment = new TopTenSongsActivityFragment();
+//            topTenSongsActivityFragment.setArguments(getIntent().getExtras());
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.fragment,topTenSongsActivityFragment)
+//                    .commit();
+        }
+
     }
 
 
