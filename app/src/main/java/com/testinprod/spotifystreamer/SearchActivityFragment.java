@@ -25,6 +25,11 @@ import kaaes.spotify.webapi.android.models.Artist;
 public class SearchActivityFragment extends Fragment {
     private static final String LOG_TAG = SearchActivityFragment.class.getSimpleName();
 
+    public static SearchActivityFragment newInstance(){
+        SearchActivityFragment fragment = new SearchActivityFragment();
+        return fragment;
+    }
+
     private ArtistResultsAdapter mResultsAdapter;
 
     public SearchActivityFragment() {

@@ -12,13 +12,16 @@ public class TopTenSongsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_ten_songs);
+
         if(savedInstanceState == null)
         {
-//            TopTenSongsActivityFragment topTenSongsActivityFragment = new TopTenSongsActivityFragment();
-//            topTenSongsActivityFragment.setArguments(getIntent().getExtras());
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.fragment,topTenSongsActivityFragment)
-//                    .commit();
+            ArtistSimpleParcelable artist = getIntent().getExtras().getParcelable(ArtistSimpleParcelable.EXTRA_SIMPLE_ARTIST);
+            if(artist!= null) {
+                TopTenSongsActivityFragment topTenSongsActivityFragment = TopTenSongsActivityFragment.newInstance(artist);
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.framelayout_top_ten_songs,topTenSongsActivityFragment)
+                        .commit();
+            }
         }
 
     }

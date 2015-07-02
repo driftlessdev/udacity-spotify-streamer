@@ -8,12 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.security.InvalidParameterException;
+
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class TopTenSongsActivityFragment extends Fragment {
     private static final String LOG_TAG = TopTenSongsActivityFragment.class.getSimpleName();
+
+    public static TopTenSongsActivityFragment newInstance(ArtistSimpleParcelable artist)
+    {
+        TopTenSongsActivityFragment fragment = new TopTenSongsActivityFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ArtistSimpleParcelable.EXTRA_SIMPLE_ARTIST, artist);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     public TopTenSongsActivityFragment() {
     }
@@ -31,11 +42,6 @@ public class TopTenSongsActivityFragment extends Fragment {
             artistSimpleParcelable = args.getParcelable(ArtistSimpleParcelable.EXTRA_SIMPLE_ARTIST);
 
         }
-        else
-        {
-
-            artistSimpleParcelable = getActivity().getIntent().getParcelableExtra(ArtistSimpleParcelable.EXTRA_SIMPLE_ARTIST);
-        }
 
         if(artistSimpleParcelable != null)
         {
@@ -44,7 +50,7 @@ public class TopTenSongsActivityFragment extends Fragment {
         }
         else
         {
-            Log.e(LOG_TAG,"Missing Artist");
+            Log.e(LOG_TAG,"Missing Artist", new InvalidParameterException("Artist is required for the activity"));
         }
 
 
