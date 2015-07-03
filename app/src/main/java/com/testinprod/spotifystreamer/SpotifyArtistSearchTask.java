@@ -1,6 +1,8 @@
 package com.testinprod.spotifystreamer;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -15,12 +17,24 @@ import kaaes.spotify.webapi.android.models.ArtistsPager;
 public class SpotifyArtistSearchTask extends AsyncTask<String, Void, ArrayList<Artist>> {
     private static final String LOG_TAG = SpotifyArtistSearchTask.class.getSimpleName();
     private ArtistResultsAdapter mAdapterToUpdate;
+    private Context mActivityContext;
 
     @Override
     protected void onPostExecute(ArrayList<Artist> spotifySearchResults) {
         super.onPostExecute(spotifySearchResults);
 
-        mAdapterToUpdate.setArtistPager(spotifySearchResults);
+        boolean searchRan = true;
+        if(spotifySearchResults == null)
+        {
+            spotifySearchResults = new ArrayList<>();
+            searchRan = false;
+        }
+
+        mAdapterToUpdate.setArtistList(spotifySearchResults);
+        if(searchRan && spotifySearchResults.size() == 0)
+        {
+            Toast.makeText(mActivityContext,"I regret to report that we came up with nil",Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -34,7 +48,7 @@ public class SpotifyArtistSearchTask extends AsyncTask<String, Void, ArrayList<A
 
         if(searchText.isEmpty())
         {
-            return new ArrayList<>();
+            return null;
         }
 
         // TODO: Implement paging support
@@ -45,8 +59,9 @@ public class SpotifyArtistSearchTask extends AsyncTask<String, Void, ArrayList<A
         return artists;
     }
 
-    public SpotifyArtistSearchTask(ArtistResultsAdapter ResultsAdapter)
+    public SpotifyArtistSearchTask(ArtistResultsAdapter ResultsAdapter, Context ActivityContext)
     {
         mAdapterToUpdate = ResultsAdapter;
+        mActivityContext = ActivityContext;
     }
 }

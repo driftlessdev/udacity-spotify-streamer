@@ -27,9 +27,8 @@ public class ArtistResultsAdapter extends BaseAdapter {
         mArtistResults = new ArrayList<>();
     }
 
-    public void setArtistPager(ArrayList<Artist> NewPager)
+    public void setArtistList(ArrayList<Artist> NewPager)
     {
-        // TODO: Handle zero results
         mArtistResults = NewPager;
         notifyDataSetChanged();
     }
