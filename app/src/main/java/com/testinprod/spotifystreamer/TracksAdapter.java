@@ -57,7 +57,9 @@ public class TracksAdapter extends BaseAdapter {
 
         TextView trackName = (TextView) convertView.findViewById(R.id.textview_track);
         Track track = mTracks.get(position);
-        trackName.setText(track.album.name + " - " + track.name);
+        trackName.setText(track.name);
+        TextView albumName = (TextView) convertView.findViewById(R.id.textview_album);
+        albumName.setText(track.album.name);
         if(track.album.images.size() > 0)
         {
             ImageView albumImage = (ImageView) convertView.findViewById(R.id.imageview_track);
