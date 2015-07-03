@@ -95,8 +95,8 @@ public class SearchActivityFragment extends Fragment {
         }
         @Override
         public void run() {
-            SpotifySearchTask spotifySearchTask = new SpotifySearchTask(mResultsAdapter);
-            spotifySearchTask.execute(mSearchText);
+            SpotifyArtistSearchTask spotifyArtistSearchTask = new SpotifyArtistSearchTask(mResultsAdapter);
+            spotifyArtistSearchTask.execute(mSearchText);
         }
     }
 }

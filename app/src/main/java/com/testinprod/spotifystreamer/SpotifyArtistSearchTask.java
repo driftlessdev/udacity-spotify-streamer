@@ -12,8 +12,8 @@ import kaaes.spotify.webapi.android.models.ArtistsPager;
 /**
  * Created by Tim on 6/28/2015.
  */
-public class SpotifySearchTask extends AsyncTask<String, Void, ArrayList<Artist>> {
-    private static final String LOG_TAG = SpotifySearchTask.class.getSimpleName();
+public class SpotifyArtistSearchTask extends AsyncTask<String, Void, ArrayList<Artist>> {
+    private static final String LOG_TAG = SpotifyArtistSearchTask.class.getSimpleName();
     private ArtistResultsAdapter mAdapterToUpdate;
 
     @Override
@@ -45,7 +45,7 @@ public class SpotifySearchTask extends AsyncTask<String, Void, ArrayList<Artist>
         return artists;
     }
 
-    public SpotifySearchTask(ArtistResultsAdapter ResultsAdapter)
+    public SpotifyArtistSearchTask(ArtistResultsAdapter ResultsAdapter)
     {
         mAdapterToUpdate = ResultsAdapter;
     }

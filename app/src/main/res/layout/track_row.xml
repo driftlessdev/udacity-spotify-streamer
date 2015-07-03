@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:paddingBottom="6dp">
+
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="fill_parent"
+        android:src="@mipmap/ic_launcher"
+        android:id="@+id/imageview_track"
+        android:layout_marginRight="6dp"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/textview_track"
+        android:layout_toEndOf="@id/imageview_track"
+        android:layout_toRightOf="@id/imageview_track"
+        android:text="Track's Name"
+        android:gravity="center_vertical"
+        style="@style/Base.TextAppearance.AppCompat.SearchResult" />
+
+</RelativeLayout>
