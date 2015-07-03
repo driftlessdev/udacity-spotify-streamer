@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-// Todo: Use theme colors from my launcher app
 
 public class SearchActivity extends AppCompatActivity {
 
