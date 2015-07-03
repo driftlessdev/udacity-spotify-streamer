@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:paddingBottom="6dp">
+    android:layout_height="?android:attr/listPreferredItemHeightLarge"
+    android:padding="6dp">
 
     <ImageView
         android:layout_width="64dp"
@@ -13,12 +13,12 @@
 
     <TextView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/textview_artist"
         android:layout_toEndOf="@id/imageview_artist"
         android:layout_toRightOf="@id/imageview_artist"
         android:text="Artist's Name"
-        android:gravity="center_vertical"
-        style="@style/Base.TextAppearance.AppCompat.SearchResult.Title" />
+        style="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_centerVertical="true" />
 
 </RelativeLayout>
