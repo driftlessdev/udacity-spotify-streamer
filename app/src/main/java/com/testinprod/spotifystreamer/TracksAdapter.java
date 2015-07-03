@@ -49,10 +49,18 @@ public class TracksAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        boolean resetImage = true;
         if(convertView == null)
         {
             LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.track_row,parent,false);
+            resetImage = false;
+        }
+
+        // Reset image to default if the view is reused.
+        ImageView albumImage = (ImageView) convertView.findViewById(R.id.imageview_track);
+        if(resetImage){
+            albumImage.setImageResource(R.mipmap.ic_launcher);
         }
 
         TextView trackName = (TextView) convertView.findViewById(R.id.textview_track);
@@ -62,7 +70,6 @@ public class TracksAdapter extends BaseAdapter {
         albumName.setText(track.album.name);
         if(track.album.images.size() > 0)
         {
-            ImageView albumImage = (ImageView) convertView.findViewById(R.id.imageview_track);
             Picasso.with(parent.getContext()).load(track.album.images.get(0).url).into(albumImage);
         }
         return convertView;

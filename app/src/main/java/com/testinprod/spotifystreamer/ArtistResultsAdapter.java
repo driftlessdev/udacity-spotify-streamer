@@ -51,19 +51,25 @@ public class ArtistResultsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        boolean resetImage = true;
         if(convertView == null)
         {
             LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.search_result_row, parent, false);
+            resetImage = false;
         }
 
+        ImageView artistImage = (ImageView) convertView.findViewById(R.id.imageview_artist);
+        if(resetImage)
+        {
+            artistImage.setImageResource(R.mipmap.ic_launcher);
+        }
         TextView artistName = (TextView) convertView.findViewById(R.id.textview_artist);
         Artist artist = mArtistResults.get(position);
         artistName.setText(artist.name);
         if(artist.images.size() > 0)
         {
-            ImageView artistImage = (ImageView) convertView.findViewById(R.id.imageview_artist);
+
             Picasso.with(parent.getContext()).load(artist.images.get(0).url).into(artistImage);
         }
 
