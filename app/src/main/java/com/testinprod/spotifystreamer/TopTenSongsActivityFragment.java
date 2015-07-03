@@ -33,10 +33,38 @@ public class TopTenSongsActivityFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.setRetainInstance(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_top_ten_songs, container, false);
+        if(savedInstanceState == null)
+        {
+            Log.v(LOG_TAG, "No saved instance state");
+        }
+        else
+        {
+            Log.v(LOG_TAG, "Saved instance state");
+        }
 
+        ListView lvTopTen = (ListView) rootView.findViewById(R.id.listview_topsongs);
+        lvTopTen.setAdapter(mTrackAdapter);
+
+        if(savedInstanceState == null)
+        {
+            // First go, so load the top ten
+            loadTopTen();
+        }
+
+        return rootView;
+    }
+
+    private void loadTopTen()
+    {
         Bundle args = getArguments();
         ArtistSimpleParcelable artistSimpleParcelable = null;
 
@@ -53,15 +81,9 @@ public class TopTenSongsActivityFragment extends Fragment {
         else
         {
             Log.e(LOG_TAG,"Missing Artist", new InvalidParameterException("Artist is required for the activity"));
-            return null;
         }
-
-        ListView lvTopTen = (ListView) rootView.findViewById(R.id.listview_topsongs);
-        lvTopTen.setAdapter(mTrackAdapter);
 
         SpotifyTopTenTask spotifyTopTenTask = new SpotifyTopTenTask(mTrackAdapter, getActivity());
         spotifyTopTenTask.execute(artistSimpleParcelable.id);
-
-        return rootView;
     }
 }
