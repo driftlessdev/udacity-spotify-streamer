@@ -18,7 +18,7 @@
         android:layout_toEndOf="@id/imageview_artist"
         android:layout_toRightOf="@id/imageview_artist"
         android:text="Artist's Name"
-        style="@style/Base.TextAppearance.AppCompat.Medium"
+        style="@style/Base.TextAppearance.AppCompat"
         android:layout_centerVertical="true" />
 
 </RelativeLayout>

@@ -17,24 +17,29 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Track's Name"
+        android:text="Album's Name"
         android:id="@+id/textview_album"
         android:layout_toEndOf="@id/imageview_track"
         android:layout_toRightOf="@id/imageview_track"
         android:layout_alignBottom="@id/imageview_track"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:scrollHorizontally="true"
+        android:ellipsize="end"
+        android:maxLines="1"/>
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textview_track"
-        android:layout_above="@id/textview_track"
         android:layout_alignLeft="@id/textview_album"
         android:layout_alignStart="@id/textview_album"
-        android:text="Album's Name"
+        android:text="Track's Name"
         android:gravity="center_vertical"
-        style="@style/Base.TextAppearance.AppCompat.Medium"
-        android:layout_centerVertical="true" />
+        style="@style/Base.TextAppearance.AppCompat"
+        android:layout_centerVertical="true"
+        android:scrollHorizontally="true"
+        android:ellipsize="end"
+        android:maxLines="1" />
 
 
 
