@@ -1,6 +1,8 @@
 package com.testinprod.spotifystreamer;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,12 +18,17 @@ import kaaes.spotify.webapi.android.models.Tracks;
 public class SpotifyTopTenTask extends AsyncTask<String, Void, ArrayList<Track>> {
     private static final String LOG_TAG = SpotifyTopTenTask.class.getSimpleName();
     private TracksAdapter mAdapterToUpdate;
+    private Context mActivityContext;
 
     @Override
     protected void onPostExecute(ArrayList<Track> topTracks) {
         super.onPostExecute(topTracks);
 
         mAdapterToUpdate.setTracks(topTracks);
+        if(topTracks.size() == 0)
+        {
+            Toast.makeText(mActivityContext, "Seems no one has ever listed to this artist before, no top tracks found", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -48,8 +55,9 @@ public class SpotifyTopTenTask extends AsyncTask<String, Void, ArrayList<Track>>
         return new ArrayList<>(topTen.tracks);
     }
 
-    public SpotifyTopTenTask(TracksAdapter ResultsAdapter)
+    public SpotifyTopTenTask(TracksAdapter ResultsAdapter, Context ApplicationContext)
     {
         mAdapterToUpdate = ResultsAdapter;
+        mActivityContext = ApplicationContext;
     }
 }

@@ -59,7 +59,7 @@ public class TopTenSongsActivityFragment extends Fragment {
         ListView lvTopTen = (ListView) rootView.findViewById(R.id.listview_topsongs);
         lvTopTen.setAdapter(mTrackAdapter);
 
-        SpotifyTopTenTask spotifyTopTenTask = new SpotifyTopTenTask(mTrackAdapter);
+        SpotifyTopTenTask spotifyTopTenTask = new SpotifyTopTenTask(mTrackAdapter, getActivity());
         spotifyTopTenTask.execute(artistSimpleParcelable.id);
 
         return rootView;
