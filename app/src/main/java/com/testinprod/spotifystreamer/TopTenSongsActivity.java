@@ -13,9 +13,10 @@ public class TopTenSongsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_ten_songs);
 
+        ArtistSimpleParcelable artist = getIntent().getExtras().getParcelable(ArtistSimpleParcelable.EXTRA_SIMPLE_ARTIST);
         if(savedInstanceState == null)
         {
-            ArtistSimpleParcelable artist = getIntent().getExtras().getParcelable(ArtistSimpleParcelable.EXTRA_SIMPLE_ARTIST);
+
             if(artist!= null) {
                 TopTenSongsActivityFragment topTenSongsActivityFragment = TopTenSongsActivityFragment.newInstance(artist);
                 getSupportFragmentManager().beginTransaction()
@@ -23,6 +24,8 @@ public class TopTenSongsActivity extends AppCompatActivity {
                         .commit();
             }
         }
+
+        this.setTitle(artist.name);
 
     }
 
