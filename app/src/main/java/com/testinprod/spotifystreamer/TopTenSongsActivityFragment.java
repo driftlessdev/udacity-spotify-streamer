@@ -57,13 +57,13 @@ public class TopTenSongsActivityFragment extends Fragment {
         if(savedInstanceState == null)
         {
             // First go, so load the top ten
-            loadTopTen();
+            loadTopTen(rootView.findViewById(R.id.soj_top_ten));
         }
 
         return rootView;
     }
 
-    private void loadTopTen()
+    private void loadTopTen(View ShieldOfJustice)
     {
         Bundle args = getArguments();
         ArtistSimpleParcelable artistSimpleParcelable = null;
@@ -81,9 +81,10 @@ public class TopTenSongsActivityFragment extends Fragment {
         else
         {
             Log.e(LOG_TAG,"Missing Artist", new InvalidParameterException("Artist is required for the activity"));
+            return;
         }
 
-        SpotifyTopTenTask spotifyTopTenTask = new SpotifyTopTenTask(mTrackAdapter, getActivity());
+        SpotifyTopTenTask spotifyTopTenTask = new SpotifyTopTenTask(mTrackAdapter, getActivity(), ShieldOfJustice);
         spotifyTopTenTask.execute(artistSimpleParcelable.id);
     }
 }

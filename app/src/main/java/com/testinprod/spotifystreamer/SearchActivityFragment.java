@@ -1,5 +1,6 @@
 package com.testinprod.spotifystreamer;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -46,8 +47,9 @@ public class SearchActivityFragment extends Fragment {
 
         EditText searchText = (EditText) rootView.findViewById(R.id.edittext_search);
         searchText.addTextChangedListener(new TextWatcher() {
-            private Timer mTimer = new Timer();
+            private Timer mTimer;
             private final long DELAY = 350;
+            private String mLastSearch;
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -62,10 +64,16 @@ public class SearchActivityFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 // TODO: Is there a better way to handle this other than a timer? A Handler maybe?
-                mTimer.cancel();
+                if(mTimer != null)
+                {
+                    // Stop if scheduled
+                    mTimer.cancel();
+                    Log.v(LOG_TAG, "Canceled search of: " + mLastSearch);
+                }
+                mLastSearch = s.toString();
                 mTimer = new Timer();
-                mTimer.schedule(new ArtistSearchTimerTask(s.toString()), DELAY);
-
+                mTimer.schedule(new ArtistSearchTimerTask(mLastSearch), DELAY);
+                Log.v(LOG_TAG, "Initiated search with: " + mLastSearch);
             }
         });
 
@@ -95,7 +103,12 @@ public class SearchActivityFragment extends Fragment {
         }
         @Override
         public void run() {
-            SpotifyArtistSearchTask spotifyArtistSearchTask = new SpotifyArtistSearchTask(mResultsAdapter, getActivity());
+            Activity activity = getActivity();
+            if(activity == null)
+            {
+                return;
+            }
+            SpotifyArtistSearchTask spotifyArtistSearchTask = new SpotifyArtistSearchTask(mResultsAdapter, getActivity(), activity.findViewById(R.id.soj_search));
             spotifyArtistSearchTask.execute(mSearchText);
         }
     }

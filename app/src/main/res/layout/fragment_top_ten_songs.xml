@@ -4,9 +4,26 @@
     android:layout_height="match_parent"
     tools:context="com.testinprod.spotifystreamer.TopTenSongsActivityFragment">
 
+
+
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/listview_topsongs"/>
+
+    <LinearLayout
+        android:id="@+id/soj_top_ten"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:visibility="gone">
+        <ProgressBar
+            android:id="@+id/progressbar_top_ten"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:max="100"
+            style="?android:attr/progressBarStyleLarge" />
+    </LinearLayout>
 
 </RelativeLayout>

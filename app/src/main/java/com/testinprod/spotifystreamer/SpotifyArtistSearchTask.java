@@ -2,6 +2,8 @@ package com.testinprod.spotifystreamer;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -17,11 +19,14 @@ import kaaes.spotify.webapi.android.models.ArtistsPager;
 public class SpotifyArtistSearchTask extends AsyncTask<String, Void, ArrayList<Artist>> {
     private static final String LOG_TAG = SpotifyArtistSearchTask.class.getSimpleName();
     private ArtistResultsAdapter mAdapterToUpdate;
-    private Context mActivityContext;
+    private Context mContext;
+    private View mShieldOfJustice;
 
     @Override
     protected void onPostExecute(ArrayList<Artist> spotifySearchResults) {
         super.onPostExecute(spotifySearchResults);
+
+        mShieldOfJustice.setVisibility(View.GONE);
 
         boolean searchRan = true;
         if(spotifySearchResults == null)
@@ -33,8 +38,30 @@ public class SpotifyArtistSearchTask extends AsyncTask<String, Void, ArrayList<A
         mAdapterToUpdate.setArtistList(spotifySearchResults);
         if(searchRan && spotifySearchResults.size() == 0)
         {
-            Toast.makeText(mActivityContext,"I regret to report that we came up with nil",Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext,"I regret to report that we came up with nil",Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    protected void onProgressUpdate(Void... values) {
+        super.onProgressUpdate(values);
+        // Ensure progressbar is visible
+        if(mShieldOfJustice != null)
+        {
+            mShieldOfJustice.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        // Ensure progressbar is visible
+        if(mShieldOfJustice != null)
+        {
+            mShieldOfJustice.setVisibility(View.GONE);
+        }
+
+        Log.v(LOG_TAG, "Task is cancelled");
     }
 
     @Override
@@ -51,6 +78,17 @@ public class SpotifyArtistSearchTask extends AsyncTask<String, Void, ArrayList<A
             return null;
         }
 
+        publishProgress();
+
+        try{
+            Thread.sleep(3000);
+        }
+        catch(Exception e)
+        {
+
+        }
+
+
         // TODO: Implement paging support
         SpotifyApi api = new SpotifyApi();
         SpotifyService spotifyService = api.getService();
@@ -59,9 +97,10 @@ public class SpotifyArtistSearchTask extends AsyncTask<String, Void, ArrayList<A
         return artists;
     }
 
-    public SpotifyArtistSearchTask(ArtistResultsAdapter ResultsAdapter, Context ActivityContext)
+    public SpotifyArtistSearchTask(ArtistResultsAdapter ResultsAdapter, Context ToastContext, View ShieldOfJustice)
     {
         mAdapterToUpdate = ResultsAdapter;
-        mActivityContext = ActivityContext;
+        mContext = ToastContext;
+        mShieldOfJustice = ShieldOfJustice;
     }
 }

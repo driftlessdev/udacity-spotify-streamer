@@ -2,6 +2,8 @@ package com.testinprod.spotifystreamer;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,15 +21,38 @@ public class SpotifyTopTenTask extends AsyncTask<String, Void, ArrayList<Track>>
     private static final String LOG_TAG = SpotifyTopTenTask.class.getSimpleName();
     private TracksAdapter mAdapterToUpdate;
     private Context mActivityContext;
+    private View mShieldOfJustice;
 
     @Override
     protected void onPostExecute(ArrayList<Track> topTracks) {
         super.onPostExecute(topTracks);
 
+        if(mShieldOfJustice != null)
+        {
+            Log.v(LOG_TAG, "Hiding the Shield of Justice: " + mShieldOfJustice.getVisibility());
+            mShieldOfJustice.setVisibility(View.GONE);
+        }
+
         mAdapterToUpdate.setTracks(topTracks);
         if(topTracks.size() == 0)
         {
             Toast.makeText(mActivityContext, "Seems no one has ever listed to this artist before, no top tracks found", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onProgressUpdate(Void... values) {
+        super.onProgressUpdate(values);
+
+        if(mShieldOfJustice != null)
+        {
+            Log.v(LOG_TAG, "Showing the Shield of Justice: " + mShieldOfJustice.getVisibility());
+            mShieldOfJustice.setVisibility(View.VISIBLE);
+
+        }
+        else
+        {
+            Log.v(LOG_TAG, "Justice will not be served");
         }
     }
 
@@ -45,6 +70,16 @@ public class SpotifyTopTenTask extends AsyncTask<String, Void, ArrayList<Track>>
             return new ArrayList<>();
         }
 
+        onProgressUpdate();
+
+        try{
+            Thread.sleep(3000);
+        }
+        catch(Exception e)
+        {
+
+        }
+
         HashMap<String, Object> options = new HashMap<>();
         options.put(SpotifyService.COUNTRY,"US");
         SpotifyApi api = new SpotifyApi();
@@ -55,9 +90,10 @@ public class SpotifyTopTenTask extends AsyncTask<String, Void, ArrayList<Track>>
         return new ArrayList<>(topTen.tracks);
     }
 
-    public SpotifyTopTenTask(TracksAdapter ResultsAdapter, Context ApplicationContext)
+    public SpotifyTopTenTask(TracksAdapter ResultsAdapter, Context ApplicationContext, View ShieldOfJustice)
     {
         mAdapterToUpdate = ResultsAdapter;
         mActivityContext = ApplicationContext;
+        mShieldOfJustice = ShieldOfJustice;
     }
 }
