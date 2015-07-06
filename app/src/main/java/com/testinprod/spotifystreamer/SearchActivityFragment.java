@@ -64,6 +64,7 @@ public class SearchActivityFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 // TODO: Is there a better way to handle this other than a timer? A Handler maybe?
+                // TODO: Actually cancel the search, right now not doing anything
                 if(mTimer != null)
                 {
                     // Stop if scheduled
