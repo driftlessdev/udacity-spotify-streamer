@@ -1,8 +1,8 @@
 package com.testinprod.spotifystreamer;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,9 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import kaaes.spotify.webapi.android.models.Artist;
 
@@ -32,6 +29,7 @@ public class SearchActivityFragment extends Fragment {
     }
 
     private ArtistResultsAdapter mResultsAdapter;
+    private View mShieldOfJustice;
 
     public SearchActivityFragment() {
         mResultsAdapter = new ArtistResultsAdapter();
@@ -43,40 +41,11 @@ public class SearchActivityFragment extends Fragment {
         View rootView =  inflater.inflate(R.layout.fragment_search, container, false);
 
 
-        // Run search 500ms after the last time they edit the text
+        mShieldOfJustice = rootView.findViewById(R.id.soj_search);
 
-        EditText searchText = (EditText) rootView.findViewById(R.id.edittext_search);
-        searchText.addTextChangedListener(new TextWatcher() {
-            private Timer mTimer;
-            private final long DELAY = 350;
-            private String mLastSearch;
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                // TODO: Is there a better way to handle this other than a timer? A Handler maybe?
-                // TODO: Actually cancel the search, right now not doing anything
-                if(mTimer != null)
-                {
-                    // Stop if scheduled
-                    mTimer.cancel();
-                    Log.v(LOG_TAG, "Canceled search of: " + mLastSearch);
-                }
-                mLastSearch = s.toString();
-                mTimer = new Timer();
-                mTimer.schedule(new ArtistSearchTimerTask(mLastSearch), DELAY);
-                Log.v(LOG_TAG, "Initiated search with: " + mLastSearch);
-            }
-        });
+        final EditText searchText = (EditText) rootView.findViewById(R.id.edittext_search);
+        searchText.addTextChangedListener(new SearchTextWatcher());
 
         ListView resultList = (ListView) rootView.findViewById(R.id.listview_results);
         resultList.setAdapter(mResultsAdapter);
@@ -95,22 +64,45 @@ public class SearchActivityFragment extends Fragment {
         return rootView;
     }
 
-    public class ArtistSearchTimerTask extends TimerTask{
-        private String mSearchText;
+    public class SearchTextWatcher implements TextWatcher {
 
-        private ArtistSearchTimerTask(String SearchTest)
-        {
-            mSearchText = SearchTest;
-        }
+        private Runnable mRunnable;
+        private Handler mHandler = new Handler();
+        private SpotifyArtistSearchTask mSearchTask;
+        private final long DELAY = 500;
+        private String mLastSearch;
+
         @Override
-        public void run() {
-            Activity activity = getActivity();
-            if(activity == null)
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if(mRunnable != null)
             {
-                return;
+                // Stop if scheduled
+                mSearchTask.cancel(true);
+                mHandler.removeCallbacks(mRunnable);
+                mSearchTask = null;
+                mRunnable = null;
+                Log.v(LOG_TAG, "Canceled search of: " + mLastSearch);
             }
-            SpotifyArtistSearchTask spotifyArtistSearchTask = new SpotifyArtistSearchTask(mResultsAdapter, getActivity(), activity.findViewById(R.id.soj_search));
-            spotifyArtistSearchTask.execute(mSearchText);
+            mLastSearch = s.toString();
+            mSearchTask = new SpotifyArtistSearchTask(mResultsAdapter,getActivity(), mShieldOfJustice);
+            mRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    mSearchTask.execute(mLastSearch);
+                }
+            };
+            mHandler.postDelayed(mRunnable, DELAY);
+            Log.v(LOG_TAG, "Initiated search with: " + mLastSearch);
         }
     }
 }

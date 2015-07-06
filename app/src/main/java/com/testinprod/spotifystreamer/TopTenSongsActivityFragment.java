@@ -54,6 +54,7 @@ public class TopTenSongsActivityFragment extends Fragment {
         ListView lvTopTen = (ListView) rootView.findViewById(R.id.listview_topsongs);
         lvTopTen.setAdapter(mTrackAdapter);
 
+        // TODO: Restore the load state
         if(savedInstanceState == null)
         {
             // First go, so load the top ten

@@ -26,7 +26,15 @@ public class SpotifyArtistSearchTask extends AsyncTask<String, Void, ArrayList<A
     protected void onPostExecute(ArrayList<Artist> spotifySearchResults) {
         super.onPostExecute(spotifySearchResults);
 
-        mShieldOfJustice.setVisibility(View.GONE);
+        if(mShieldOfJustice != null)
+        {
+            mShieldOfJustice.setVisibility(View.GONE);
+        }
+        else
+        {
+            Log.i(LOG_TAG, "Shield of justice missing!");
+        }
+
 
         boolean searchRan = true;
         if(spotifySearchResults == null)
@@ -60,8 +68,6 @@ public class SpotifyArtistSearchTask extends AsyncTask<String, Void, ArrayList<A
         {
             mShieldOfJustice.setVisibility(View.GONE);
         }
-
-        Log.v(LOG_TAG, "Task is cancelled");
     }
 
     @Override
@@ -93,8 +99,12 @@ public class SpotifyArtistSearchTask extends AsyncTask<String, Void, ArrayList<A
         SpotifyApi api = new SpotifyApi();
         SpotifyService spotifyService = api.getService();
         ArtistsPager results = spotifyService.searchArtists(searchText);
-        ArrayList<Artist> artists = new ArrayList<>(results.artists.items);
-        return artists;
+        if(isCancelled())
+        {
+            Log.v(LOG_TAG, "Search canceled after starting");
+            return null;
+        }
+        return new ArrayList<>(results.artists.items);
     }
 
     public SpotifyArtistSearchTask(ArtistResultsAdapter ResultsAdapter, Context ToastContext, View ShieldOfJustice)
